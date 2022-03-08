@@ -12,6 +12,7 @@ export type StackNavigatorParamList = {
     retweets: number;
     hearts: number;
   };
+  Home: undefined;
   About: undefined;
   Login: undefined;
   Refer: undefined;

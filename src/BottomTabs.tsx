@@ -16,13 +16,14 @@ import { useIsFocused, RouteProp } from '@react-navigation/native';
 
 // import { Feed } from './feed';
 import { Message } from './message';
-import { Notifications } from './notifications';
+// import { Notifications } from './notifications';
 import { StackNavigatorParamList } from './types';
 
 import overlay from './overlay';
 import ProfilePage from './Pages/Profile';
 import RateApp from './Pages/RateApp';
 import HomeScreen from './Pages/Home';
+import SearchPage from './Pages/Search';
 
 // bottom tab menu
 const Tab = createMaterialBottomTabNavigator();
@@ -86,7 +87,7 @@ export const BottomTabs = (props: Props) => {
         />
         <Tab.Screen
           name="Search"
-          component={Notifications}
+          component={SearchPage}
           options={{
             tabBarIcon: 'magnify',
             tabBarColor,

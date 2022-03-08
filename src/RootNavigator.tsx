@@ -35,6 +35,9 @@ export const RootNavigator = () => {
           options={{
             // remove the default header
             headerShown: false,
+            drawerContentContainerStyle: {
+              backgroundColor: theme.colors.surface,
+            },
           }}
         />
       </Drawer.Navigator>

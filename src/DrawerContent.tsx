@@ -48,7 +48,6 @@ export function DrawerContent(props: DrawerContentComponentProps) {
         //@ts-ignore
         style={[
           animatedStyles,
-          // eslint-disable-next-line react-native/no-inline-styles
           {
             backgroundColor: paperTheme.colors.surface,
             flex: 1,

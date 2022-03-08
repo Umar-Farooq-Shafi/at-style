@@ -20,8 +20,23 @@ var react_1 = require("react");
 var react_native_1 = require("react-native");
 var react_native_image_slider_box_1 = require("react-native-image-slider-box");
 var react_native_paper_1 = require("react-native-paper");
+var BookTailorSchedule_1 = require("../Components/BookTailorSchedule");
+var ModelComponent = function (_a) {
+    var visible = _a.visible, hideModal = _a.hideModal, backgroundColor = _a.backgroundColor;
+    return (react_1["default"].createElement(react_native_paper_1.Portal, null,
+        react_1["default"].createElement(react_native_paper_1.Modal, { visible: visible, onDismiss: hideModal, contentContainerStyle: [
+                styles.containerStyle,
+                {
+                    backgroundColor: backgroundColor
+                },
+            ] },
+            react_1["default"].createElement(BookTailorSchedule_1["default"], null))));
+};
 var RenderItem = function (props) {
     var theme = react_native_paper_1.useTheme();
+    var _a = react_1["default"].useState(false), visible = _a[0], setVisible = _a[1];
+    var showModal = function () { return setVisible(true); };
+    var hideModal = function () { return setVisible(false); };
     var contentColor = color_1["default"](theme.colors.text).alpha(0.8).rgb().string();
     return (react_1["default"].createElement(react_native_paper_1.Surface, null,
         react_1["default"].createElement(react_native_image_slider_box_1.SliderBox, { images: props.images, sliderBoxHeight: 250, dotColor: "#2196F3", inactiveDotColor: "#90A4AE", dotStyle: {
@@ -49,7 +64,9 @@ var RenderItem = function (props) {
                 react_1["default"].createElement(react_native_paper_1.Card.Actions, { style: styles.cardAction },
                     react_1["default"].createElement(react_native_paper_1.Button, { labelStyle: {
                             fontSize: 12
-                        }, icon: "arrow-right-bold-circle-outline", mode: "contained", color: contentColor, style: styles.btnCard }, "Schedule Now"))),
+                        }, icon: "arrow-right-bold-circle-outline", mode: "contained", color: contentColor, style: styles.btnCard, onPress: showModal },
+                        react_1["default"].createElement(ModelComponent, { visible: visible, backgroundColor: theme.colors.background, hideModal: hideModal }),
+                        "Schedule Now"))),
             react_1["default"].createElement(react_native_paper_1.Card, { style: [
                     styles.card,
                     {
@@ -113,7 +130,8 @@ var styles = react_native_1.StyleSheet.create({
     paragraph: {
         margin: 15,
         textShadowRadius: 2
-    }
+    },
+    containerStyle: { width: '100%', height: '100%' }
 });
 function renderItem(_a) {
     var item = _a.item;
@@ -130,7 +148,7 @@ var DATA = [
         ]
     },
 ];
-function HomeScreen( /* { state, descriptors, navigation }: any */) {
+function HomeScreen(_props) {
     var theme = react_native_paper_1.useTheme();
     return (react_1["default"].createElement(react_native_1.FlatList, { contentContainerStyle: { backgroundColor: theme.colors.background }, style: { backgroundColor: theme.colors.background }, data: DATA, renderItem: renderItem, ItemSeparatorComponent: function () { return (react_1["default"].createElement(react_native_1.View, { style: { height: react_native_1.StyleSheet.hairlineWidth } })); } }));
 }

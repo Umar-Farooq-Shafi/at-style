@@ -6,19 +6,63 @@
 'use strict';
 import Color from 'color';
 import React from 'react';
-import { View, FlatList, StyleSheet, Image, Text } from 'react-native';
+import { View, FlatList, StyleSheet, Image } from 'react-native';
 
 import { SliderBox } from 'react-native-image-slider-box';
-import { Button, Card, Paragraph, Surface, useTheme } from 'react-native-paper';
-import { Screen } from 'react-native-screens';
+import {
+  Button,
+  Card,
+  Paragraph,
+  Surface,
+  useTheme,
+  Modal,
+  Portal,
+} from 'react-native-paper';
+import { MaterialBottomTabScreenProps } from '@react-navigation/material-bottom-tabs';
+
+import { StackNavigatorParamList } from '../types';
+
+import BookTailorSchedule from '../Components/BookTailorSchedule';
 
 type Props = {
   id: number;
   images: Array<string>;
 };
 
+type ModelComponentProps = {
+  visible: boolean;
+  hideModal: () => void;
+  backgroundColor: string;
+};
+
+const ModelComponent = ({
+  visible,
+  hideModal,
+  backgroundColor,
+}: ModelComponentProps) => {
+  return (
+    <Portal>
+      <Modal
+        visible={visible}
+        onDismiss={hideModal}
+        contentContainerStyle={[
+          styles.containerStyle,
+          {
+            backgroundColor: backgroundColor,
+          },
+        ]}>
+        <BookTailorSchedule />
+      </Modal>
+    </Portal>
+  );
+};
+
 const RenderItem = (props: Props) => {
   const theme = useTheme();
+  const [visible, setVisible] = React.useState(false);
+
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
 
   const contentColor = Color(theme.colors.text).alpha(0.8).rgb().string();
 
@@ -71,7 +115,13 @@ const RenderItem = (props: Props) => {
               icon="arrow-right-bold-circle-outline"
               mode="contained"
               color={contentColor}
-              style={styles.btnCard}>
+              style={styles.btnCard}
+              onPress={showModal}>
+              <ModelComponent
+                visible={visible}
+                backgroundColor={theme.colors.background}
+                hideModal={hideModal}
+              />
               Schedule Now
             </Button>
           </Card.Actions>
@@ -178,6 +228,7 @@ const styles = StyleSheet.create({
     margin: 15,
     textShadowRadius: 2,
   },
+  containerStyle: { width: '100%', height: '100%' },
 });
 
 type RenderItemProps = React.ComponentProps<typeof RenderItem>;
@@ -198,7 +249,12 @@ const DATA: Array<React.ComponentProps<typeof RenderItem>> = [
   },
 ];
 
-function HomeScreen(/* { state, descriptors, navigation }: any */) {
+type ScreenProps = MaterialBottomTabScreenProps<
+  StackNavigatorParamList,
+  'Home'
+>;
+
+function HomeScreen(_props: ScreenProps) {
   const theme = useTheme();
 
   return (
