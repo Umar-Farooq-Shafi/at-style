@@ -20,17 +20,27 @@ var react_1 = require("react");
 var react_native_1 = require("react-native");
 var react_native_image_slider_box_1 = require("react-native-image-slider-box");
 var react_native_paper_1 = require("react-native-paper");
-var BookTailorSchedule_1 = require("../Components/BookTailorSchedule");
+var react_native_reanimated_1 = require("react-native-reanimated");
+var tailorSchedule_1 = require("../data/tailorSchedule");
+var dryCleanSchedule_1 = require("../data/dryCleanSchedule");
+var Schedule_1 = require("../Components/Schedule");
 var ModelComponent = function (_a) {
-    var visible = _a.visible, hideModal = _a.hideModal, backgroundColor = _a.backgroundColor;
-    return (react_1["default"].createElement(react_native_paper_1.Portal, null,
-        react_1["default"].createElement(react_native_paper_1.Modal, { visible: visible, onDismiss: hideModal, contentContainerStyle: [
-                styles.containerStyle,
-                {
-                    backgroundColor: backgroundColor
-                },
-            ] },
-            react_1["default"].createElement(BookTailorSchedule_1["default"], null))));
+    var visible = _a.visible, hideModal = _a.hideModal, backgroundColor = _a.backgroundColor, data = _a.data;
+    var offset = react_native_reanimated_1.useSharedValue(0);
+    var animatedStyles = react_native_reanimated_1.useAnimatedStyle(function () {
+        return {
+            transform: [{ translateY: offset.value * 255 }]
+        };
+    });
+    return (react_1["default"].createElement(react_native_reanimated_1["default"].View, { style: animatedStyles, entering: react_native_reanimated_1.SlideInDown.duration(3000), exiting: react_native_reanimated_1.SlideInDown },
+        react_1["default"].createElement(react_native_paper_1.Portal, null,
+            react_1["default"].createElement(react_native_paper_1.Modal, { visible: visible, onDismiss: hideModal, contentContainerStyle: [
+                    styles.containerStyle,
+                    {
+                        backgroundColor: backgroundColor
+                    },
+                ] },
+                react_1["default"].createElement(Schedule_1["default"], { data: data })))));
 };
 var RenderItem = function (props) {
     var theme = react_native_paper_1.useTheme();
@@ -65,7 +75,7 @@ var RenderItem = function (props) {
                     react_1["default"].createElement(react_native_paper_1.Button, { labelStyle: {
                             fontSize: 12
                         }, icon: "arrow-right-bold-circle-outline", mode: "contained", color: contentColor, style: styles.btnCard, onPress: showModal },
-                        react_1["default"].createElement(ModelComponent, { visible: visible, backgroundColor: theme.colors.background, hideModal: hideModal }),
+                        react_1["default"].createElement(ModelComponent, { visible: visible, backgroundColor: theme.colors.background, hideModal: hideModal, data: tailorSchedule_1["default"] }),
                         "Schedule Now"))),
             react_1["default"].createElement(react_native_paper_1.Card, { style: [
                     styles.card,
@@ -81,7 +91,9 @@ var RenderItem = function (props) {
                 react_1["default"].createElement(react_native_paper_1.Card.Actions, { style: styles.cardAction },
                     react_1["default"].createElement(react_native_paper_1.Button, { labelStyle: {
                             fontSize: 12
-                        }, icon: "arrow-right-bold-circle-outline", mode: "contained", color: contentColor, style: styles.btnCard }, "Schedule Now")))),
+                        }, icon: "arrow-right-bold-circle-outline", mode: "contained", color: contentColor, style: styles.btnCard, onPress: showModal },
+                        react_1["default"].createElement(ModelComponent, { visible: visible, backgroundColor: theme.colors.background, hideModal: hideModal, data: dryCleanSchedule_1["default"] }),
+                        "Schedule Now")))),
         react_1["default"].createElement(react_native_1.View, { style: {
                 flexDirection: 'row',
                 marginHorizontal: 10

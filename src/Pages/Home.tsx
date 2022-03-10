@@ -18,11 +18,18 @@ import {
   Modal,
   Portal,
 } from 'react-native-paper';
+import Animated, {
+  SlideInDown,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
 import { MaterialBottomTabScreenProps } from '@react-navigation/material-bottom-tabs';
 
 import { StackNavigatorParamList } from '../types';
+import tailorDATA from '../data/tailorSchedule';
+import dryDATA from '../data/dryCleanSchedule';
 
-import BookTailorSchedule from '../Components/BookTailorSchedule';
+import Schedule from '../Components/Schedule';
 
 type Props = {
   id: number;
@@ -33,27 +40,42 @@ type ModelComponentProps = {
   visible: boolean;
   hideModal: () => void;
   backgroundColor: string;
+  data: any;
 };
 
-const ModelComponent = ({
+const ModelComponent: React.FunctionComponent<ModelComponentProps> = ({
   visible,
   hideModal,
   backgroundColor,
+  data,
 }: ModelComponentProps) => {
+  const offset = useSharedValue(0);
+
+  const animatedStyles = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateY: offset.value * 255 }],
+    };
+  });
+
   return (
-    <Portal>
-      <Modal
-        visible={visible}
-        onDismiss={hideModal}
-        contentContainerStyle={[
-          styles.containerStyle,
-          {
-            backgroundColor: backgroundColor,
-          },
-        ]}>
-        <BookTailorSchedule />
-      </Modal>
-    </Portal>
+    <Animated.View
+      style={animatedStyles}
+      entering={SlideInDown.duration(3000)}
+      exiting={SlideInDown}>
+      <Portal>
+        <Modal
+          visible={visible}
+          onDismiss={hideModal}
+          contentContainerStyle={[
+            styles.containerStyle,
+            {
+              backgroundColor: backgroundColor,
+            },
+          ]}>
+          <Schedule data={data} />
+        </Modal>
+      </Portal>
+    </Animated.View>
   );
 };
 
@@ -121,6 +143,7 @@ const RenderItem = (props: Props) => {
                 visible={visible}
                 backgroundColor={theme.colors.background}
                 hideModal={hideModal}
+                data={tailorDATA}
               />
               Schedule Now
             </Button>
@@ -155,7 +178,14 @@ const RenderItem = (props: Props) => {
               icon="arrow-right-bold-circle-outline"
               mode="contained"
               color={contentColor}
-              style={styles.btnCard}>
+              style={styles.btnCard}
+              onPress={showModal}>
+              <ModelComponent
+                visible={visible}
+                backgroundColor={theme.colors.background}
+                hideModal={hideModal}
+                data={dryDATA}
+              />
               Schedule Now
             </Button>
           </Card.Actions>

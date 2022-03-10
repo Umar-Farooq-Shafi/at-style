@@ -275,9 +275,9 @@ function renderItem(_a) {
     var item = _a.item;
     return react_1["default"].createElement(RenderItem, __assign({}, item));
 }
-function BookTailorSchedule(_a) {
+function Schedule(_a) {
     var data = _a.data;
     var theme = react_native_paper_1.useTheme();
     return (react_1["default"].createElement(react_native_1.FlatList, { contentContainerStyle: { backgroundColor: theme.colors.background }, style: { backgroundColor: theme.colors.background }, data: data, renderItem: renderItem, ItemSeparatorComponent: function () { return (react_1["default"].createElement(react_native_1.View, { style: { height: react_native_1.StyleSheet.hairlineWidth } })); } }));
 }
-exports["default"] = BookTailorSchedule;
+exports["default"] = Schedule;
