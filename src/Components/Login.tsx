@@ -15,6 +15,7 @@ import {
   Button,
   Checkbox,
 } from 'react-native-paper';
+import normalize from './Normalize';
 
 function Login() {
   const [email, setEmail] = React.useState('');
@@ -30,8 +31,8 @@ function Login() {
       style={{
         flex: 1,
         flexDirection: 'column',
+        // backgroundColor: theme.colors.background,
         marginTop: 30,
-        backgroundColor: theme.colors.background,
       }}>
       <View
         style={{
@@ -144,12 +145,12 @@ function Login() {
             <View
               style={{
                 flexDirection: 'row',
-                marginVertical: 8,
+                marginVertical: normalize(8),
                 justifyContent: 'space-between',
               }}>
               <Button
                 labelStyle={{
-                  fontSize: 10,
+                  fontSize: normalize(8),
                   fontWeight: 'bold',
                 }}
                 mode="text"
@@ -158,7 +159,7 @@ function Login() {
               </Button>
               <Button
                 labelStyle={{
-                  fontSize: 10,
+                  fontSize: normalize(8),
                   fontWeight: 'bold',
                 }}
                 mode="text"
@@ -181,7 +182,7 @@ function Login() {
             </Text>
             <Button
               labelStyle={{
-                fontSize: 12,
+                fontSize: normalize(12),
               }}
               mode="text"
               color="#2196F3">

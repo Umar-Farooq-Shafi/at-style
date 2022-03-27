@@ -81,10 +81,13 @@ const ModelComponent: React.FunctionComponent<ModelComponentProps> = ({
 
 const RenderItem = (props: Props) => {
   const theme = useTheme();
-  const [visible, setVisible] = React.useState(false);
+  const [visible1, setVisible1] = React.useState(false);
+  const [visible2, setVisible2] = React.useState(false);
 
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
+  const showModal1 = () => setVisible1(true);
+  const showModal2 = () => setVisible2(true);
+  const hideModal1 = () => setVisible1(false);
+  const hideModal2 = () => setVisible2(false);
 
   const contentColor = Color(theme.colors.text).alpha(0.8).rgb().string();
 
@@ -138,11 +141,11 @@ const RenderItem = (props: Props) => {
               mode="contained"
               color={contentColor}
               style={styles.btnCard}
-              onPress={showModal}>
+              onPress={showModal1}>
               <ModelComponent
-                visible={visible}
+                visible={visible1}
                 backgroundColor={theme.colors.background}
-                hideModal={hideModal}
+                hideModal={hideModal1}
                 data={tailorDATA}
               />
               Schedule Now
@@ -179,11 +182,11 @@ const RenderItem = (props: Props) => {
               mode="contained"
               color={contentColor}
               style={styles.btnCard}
-              onPress={showModal}>
+              onPress={showModal2}>
               <ModelComponent
-                visible={visible}
+                visible={visible2}
                 backgroundColor={theme.colors.background}
-                hideModal={hideModal}
+                hideModal={hideModal2}
                 data={dryDATA}
               />
               Schedule Now
@@ -204,7 +207,10 @@ const RenderItem = (props: Props) => {
           }}
           source={require('../assets/images/store-2017.png')}
         />
-        <View>
+        <View
+          style={{
+            flex: 1,
+          }}>
           <Paragraph
             style={[
               styles.paragraph,
@@ -212,7 +218,7 @@ const RenderItem = (props: Props) => {
                 color: contentColor,
               },
             ]}>
-            One-Stop destination for all clothing and {'\n'}accessories at one
+            One-Stop destination for all clothing and accessories at one
             platform.
           </Paragraph>
           <Button

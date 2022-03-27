@@ -5,18 +5,17 @@
 
 'use strict';
 import React from 'react';
-
 import {
   FlatList,
   StyleSheet,
   Text,
   View,
   TextInput,
-  ScrollView,
   Image,
   ImageSourcePropType,
   Pressable,
 } from 'react-native';
+
 import {
   Button,
   Card,
@@ -25,10 +24,12 @@ import {
   Surface,
   useTheme,
 } from 'react-native-paper';
-import DatePicker, { getToday } from 'react-native-modern-datepicker';
 import Color from 'color';
+import DatePicker, { getToday } from 'react-native-modern-datepicker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import normalize from './Normalize';
 
 type ListProps = {
   id: number;
@@ -60,23 +61,30 @@ const RenderItem = (props: Props) => {
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            padding: 10,
+            padding: normalize(10),
           }}>
           <Image
             source={image}
             style={{
-              borderRadius: 50,
-              width: 30,
-              height: 30,
+              borderRadius: normalize(50),
+              width: normalize(25),
+              height: normalize(25),
             }}
           />
           <View
             style={{
-              margin: 10,
+              margin: normalize(10),
+              flex: 1,
             }}>
-            <Text style={{ color: contentColor, fontSize: 18 }}>{title}</Text>
+            <Text style={{ color: contentColor, fontSize: normalize(18) }}>
+              {title}
+            </Text>
             <Text
-              style={{ color: contentColor, fontSize: 10, fontWeight: 'bold' }}>
+              style={{
+                color: contentColor,
+                fontSize: normalize(10),
+                fontWeight: 'bold',
+              }}>
               RS: {price}
             </Text>
           </View>
@@ -108,14 +116,12 @@ const RenderItem = (props: Props) => {
             </Pressable>
             <Text
               style={{
-                fontSize: 20,
+                fontSize: normalize(18),
                 color: contentColor,
-                width: 30,
-                alignItems: 'center',
-                justifyContent: 'center',
+                width: normalize(30),
                 borderColor: '#000',
                 borderWidth: 1,
-                paddingLeft: 10,
+                paddingLeft: normalize(10),
                 backgroundColor: theme.colors.background,
               }}>
               {counter}
@@ -130,7 +136,7 @@ const RenderItem = (props: Props) => {
                 backgroundColor: pressed
                   ? 'rgb(177, 208, 247)'
                   : theme.colors.background,
-                borderRadius: 8,
+                borderRadius: normalize(8),
               })}>
               <Ionicons
                 name="remove-outline"
@@ -168,10 +174,10 @@ const RenderItem = (props: Props) => {
         {/* Title of the screen */}
         <Text
           style={{
-            fontSize: 25,
+            fontSize: normalize(25),
             fontWeight: 'bold',
             textAlign: 'center',
-            marginVertical: 20,
+            marginVertical: normalize(20),
             color: contentColor,
           }}>
           {props.title}
@@ -180,29 +186,28 @@ const RenderItem = (props: Props) => {
         {/* tailor service details search card */}
         <Card
           style={{
-            margin: 10,
-            maxHeight: 600,
+            margin: normalize(10),
             overflow: 'scroll',
           }}>
           <Card.Content>
             <Text
               style={{
-                fontSize: 15,
+                fontSize: normalize(15),
                 fontWeight: 'bold',
                 color: contentColor,
               }}>
               {props.serviceDetailsTitle}
             </Text>
-            <Divider style={{ marginVertical: 10 }} />
+            <Divider style={{ marginVertical: normalize(10) }} />
 
             {/* search for the service(s) */}
             <TextInput
               style={{
                 borderColor: '#2196F3',
-                height: 40,
-                margin: 12,
+                height: normalize(40),
+                margin: normalize(12),
                 borderWidth: 2,
-                padding: 10,
+                padding: normalize(10),
                 color: contentColor,
               }}
               placeholder="Search Services..."
@@ -210,16 +215,11 @@ const RenderItem = (props: Props) => {
             <Divider />
 
             {/* list of the service available */}
-            <ScrollView
-              style={{
-                flexGrow: 0,
-              }}>
-              <FlatList
-                data={props.list}
-                renderItem={renderListItem}
-                keyExtractor={(item: any) => item.id}
-              />
-            </ScrollView>
+            <FlatList
+              data={props.list}
+              renderItem={renderListItem}
+              keyExtractor={(item: any) => item.id}
+            />
           </Card.Content>
         </Card>
 
@@ -232,9 +232,9 @@ const RenderItem = (props: Props) => {
             <Text
               style={{
                 fontWeight: 'bold',
-                fontSize: 15,
+                fontSize: normalize(15),
                 color: contentColor,
-                paddingBottom: 10,
+                paddingBottom: normalize(10),
               }}>
               Fabric Details
             </Text>
@@ -243,7 +243,7 @@ const RenderItem = (props: Props) => {
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                start: -10,
+                start: normalize(-10),
               }}>
               <RadioButton
                 value="first"
@@ -260,7 +260,7 @@ const RenderItem = (props: Props) => {
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                start: -10,
+                start: normalize(-10),
               }}>
               <RadioButton
                 value="second"
@@ -278,13 +278,13 @@ const RenderItem = (props: Props) => {
         {/* measurement details card */}
         <Card
           style={{
-            margin: 10,
+            margin: normalize(10),
           }}>
           <Card.Content>
             <Text
               style={{
                 fontWeight: 'bold',
-                fontSize: 15,
+                fontSize: normalize(15),
                 color: contentColor,
               }}>
               Measurement Details
@@ -293,8 +293,8 @@ const RenderItem = (props: Props) => {
             <View
               style={{
                 flexDirection: 'row',
-                start: -10,
-                paddingTop: 10,
+                start: normalize(-10),
+                paddingTop: normalize(10),
               }}>
               <RadioButton value="third" status="checked" color="#2196F3" />
               <Text style={{ color: contentColor }}>
@@ -308,15 +308,15 @@ const RenderItem = (props: Props) => {
         {/* pick up address card */}
         <Card
           style={{
-            margin: 10,
+            margin: normalize(10),
           }}>
           <Card.Content>
             <Text
               style={{
                 fontWeight: 'bold',
-                fontSize: 15,
+                fontSize: normalize(15),
                 color: contentColor,
-                marginBottom: 15,
+                marginBottom: normalize(15),
               }}>
               Pickup address
             </Text>
@@ -328,10 +328,10 @@ const RenderItem = (props: Props) => {
               <Button
                 style={{
                   backgroundColor: '#2196F3',
-                  width: 160,
+                  width: normalize(140),
                 }}
                 labelStyle={{
-                  fontSize: 12,
+                  fontSize: normalize(12),
                 }}
                 color={contentColor}
                 onPress={() => {}}>
@@ -350,9 +350,9 @@ const RenderItem = (props: Props) => {
             <Text
               style={{
                 fontWeight: 'bold',
-                fontSize: 15,
+                fontSize: normalize(15),
                 color: contentColor,
-                marginBottom: 15,
+                marginBottom: normalize(15),
               }}>
               Delivery address
             </Text>
@@ -364,10 +364,10 @@ const RenderItem = (props: Props) => {
               <Button
                 style={{
                   backgroundColor: '#2196F3',
-                  width: 160,
+                  width: normalize(140),
                 }}
                 labelStyle={{
-                  fontSize: 12,
+                  fontSize: normalize(12),
                 }}
                 color={contentColor}
                 onPress={() => {}}>
@@ -386,9 +386,9 @@ const RenderItem = (props: Props) => {
             <Text
               style={{
                 fontWeight: 'bold',
-                fontSize: 15,
+                fontSize: normalize(15),
                 color: contentColor,
-                marginBottom: 5,
+                marginBottom: normalize(5),
               }}>
               Select Pickup Date
             </Text>
@@ -396,11 +396,11 @@ const RenderItem = (props: Props) => {
             <DatePicker
               options={{
                 backgroundColor: theme.colors.background,
-                textHeaderColor: '#2196F3',
-                textDefaultColor: '#F6E7C1',
-                selectedTextColor: '#2196F3',
+                textHeaderColor: contentColor,
+                textDefaultColor: contentColor,
+                selectedTextColor: contentColor,
                 mainColor: contentColor,
-                textSecondaryColor: '#D6C7A1',
+                textSecondaryColor: contentColor,
                 borderColor: 'rgba(122, 146, 165, 0.1)',
               }}
               onSelectedChange={(date: any) => setSelectedDate(date)}
@@ -409,14 +409,14 @@ const RenderItem = (props: Props) => {
             <View
               style={{
                 alignSelf: 'center',
-                marginTop: 10,
+                marginTop: normalize(10),
               }}>
               <Button
                 style={{
-                  width: 160,
+                  width: normalize(160),
                 }}
                 labelStyle={{
-                  fontSize: 12,
+                  fontSize: normalize(12),
                 }}
                 mode="text"
                 color="#2196F3"
@@ -432,7 +432,7 @@ const RenderItem = (props: Props) => {
         {/* sign-up card */}
         <Card
           style={{
-            margin: 10,
+            margin: normalize(10),
           }}>
           <Card.Content>
             <View
@@ -444,13 +444,13 @@ const RenderItem = (props: Props) => {
                 style={{
                   fontWeight: 'bold',
                   color: contentColor,
-                  fontSize: 15,
-                  marginLeft: 10,
+                  fontSize: normalize(15),
+                  marginLeft: normalize(10),
                 }}>
-                AtStyle: The best Service Provider in lahore
+                AtStyle: The best Service {'\n'} Provider in lahore
               </Text>
             </View>
-            <Divider style={{ marginVertical: 10 }} />
+            <Divider style={{ marginVertical: normalize(10) }} />
 
             <Button mode="outlined" onPress={() => {}} color="#2196F3">
               Sign In for booking
@@ -463,118 +463,6 @@ const RenderItem = (props: Props) => {
 };
 
 export { RenderItem };
-
-// const DATA: Array<React.ComponentProps<typeof RenderItem>> = [
-//   {
-//     id: 1,
-//     title: 'Book Tailor Schedule',
-//     serviceDetailsTitle: 'Tailer Service Details',
-//     list: [
-//       {
-//         id: 1,
-//         title: 'men suit 3 pcs',
-//         price: 65000,
-//         image: require('../assets/images/photo-1506794778202-cad84cf45f1d.jpg'),
-//       },
-//       {
-//         id: 2,
-//         title: 'men suit 2 pcs',
-//         price: 55000,
-//         image: require('../assets/images/photo-1506794778202-cad84cf45f1d.jpg'),
-//       },
-//       {
-//         id: 3,
-//         title: 'men bandi',
-//         price: 21000,
-//         image: require('../assets/images/photo-1506794778202-cad84cf45f1d.jpg'),
-//       },
-//       {
-//         id: 4,
-//         title: 'men wait coat',
-//         price: 13000,
-//         image: require('../assets/images/photo-1506794778202-cad84cf45f1d.jpg'),
-//       },
-//       {
-//         id: 5,
-//         title: 'men coat/blazer',
-//         price: 36000,
-//         image: require('../assets/images/photo-1506794778202-cad84cf45f1d.jpg'),
-//       },
-//       {
-//         id: 6,
-//         title: 'men shirt',
-//         price: 5000,
-//         image: require('../assets/images/photo-1506794778202-cad84cf45f1d.jpg'),
-//       },
-//       {
-//         id: 7,
-//         title: 'men pant',
-//         price: 6000,
-//         image: require('../assets/images/photo-1506794778202-cad84cf45f1d.jpg'),
-//       },
-//       {
-//         id: 8,
-//         title: 'men kurta plain',
-//         price: 5000,
-//         image: require('../assets/images/photo-1506794778202-cad84cf45f1d.jpg'),
-//       },
-//       {
-//         id: 9,
-//         title: 'men silk kurta',
-//         price: 13000,
-//         image: require('../assets/images/photo-1506794778202-cad84cf45f1d.jpg'),
-//       },
-//       {
-//         id: 10,
-//         title: 'men apron',
-//         price: 9000,
-//         image: require('../assets/images/photo-1506794778202-cad84cf45f1d.jpg'),
-//       },
-//       {
-//         id: 11,
-//         title: 'woman blouse (plain)',
-//         price: 2000,
-//         image: require('../assets/images/photo-1581963320355-8b54453eaa87.jpg'),
-//       },
-//       {
-//         id: 12,
-//         title: 'women slwar suit',
-//         price: 450,
-//         image: require('../assets/images/photo-1581963320355-8b54453eaa87.jpg'),
-//       },
-//       {
-//         id: 13,
-//         title: 'women slwar suit designer',
-//         price: 500,
-//         image: require('../assets/images/photo-1581963320355-8b54453eaa87.jpg'),
-//       },
-//       {
-//         id: 14,
-//         title: 'women top/shirt',
-//         price: 400,
-//         image: require('../assets/images/photo-1581963320355-8b54453eaa87.jpg'),
-//       },
-//       {
-//         id: 15,
-//         title: 'women five seater sofa cover',
-//         price: 2000,
-//         image: require('../assets/images/photo-1581963320355-8b54453eaa87.jpg'),
-//       },
-//       {
-//         id: 16,
-//         title: 'home curtain',
-//         price: 200,
-//         image: require('../assets/images/curtain.jpg'),
-//       },
-//       {
-//         id: 17,
-//         title: 'home pillow',
-//         price: 150,
-//         image: require('../assets/images/pillow.jpg'),
-//       },
-//     ],
-//   },
-// ];
 
 type RenderItemProps = React.ComponentProps<typeof RenderItem>;
 
