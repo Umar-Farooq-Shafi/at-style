@@ -9,6 +9,7 @@ import React from 'react';
 import { View, Text, SafeAreaView, TextInput, ScrollView } from 'react-native';
 import { Card, useTheme, Paragraph, Button } from 'react-native-paper';
 import { Dropdown } from 'react-native-element-dropdown';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import normalize from './Normalize';
 
@@ -26,17 +27,22 @@ function Register() {
   const [phone, setPhone] = React.useState('');
   const [code, setCode] = React.useState('');
 
+  const [secure, setSecure] = React.useState(true);
+  const [secure2, setSecure2] = React.useState(true);
+
   const theme = useTheme();
   const contentColor = Color(theme.colors.text).alpha(0.8).rgb().string();
 
   return (
     <SafeAreaView
       style={{
-        paddingTop: normalize(40),
         flex: 1,
         backgroundColor: theme.colors.background,
       }}>
-      <ScrollView>
+      <ScrollView
+        style={{
+          marginTop: normalize(40),
+        }}>
         <Text
           style={{
             color: contentColor,
@@ -62,6 +68,8 @@ function Register() {
             marginVertical: 10,
             width: '90%',
             alignSelf: 'center',
+            paddingTop: 10,
+            paddingBottom: 30,
           }}>
           <Card>
             <Card.Content>
@@ -80,6 +88,7 @@ function Register() {
                   borderBottomWidth: 1,
                   borderBottomColor: '#2196F3',
                   marginBottom: 10,
+                  color: contentColor,
                 }}
               />
 
@@ -127,6 +136,7 @@ function Register() {
                   borderBottomWidth: 1,
                   borderBottomColor: '#2196F3',
                   marginBottom: 10,
+                  color: contentColor,
                 }}
               />
 
@@ -145,7 +155,10 @@ function Register() {
                   borderBottomWidth: 1,
                   borderBottomColor: '#2196F3',
                   marginBottom: 10,
+                  color: contentColor,
                 }}
+                autoComplete="email"
+                textContentType="emailAddress"
               />
 
               <Paragraph
@@ -163,8 +176,21 @@ function Register() {
                   borderBottomWidth: 1,
                   borderBottomColor: '#2196F3',
                   marginBottom: 10,
+                  color: contentColor,
                 }}
+                autoComplete="password-new"
+                textContentType="password"
+                secureTextEntry={secure}
               />
+              {secure && (
+                <Ionicons
+                  style={{ paddingRight: 15 }}
+                  name={secure ? 'eye-outline' : 'eye-off-outline'}
+                  size={20}
+                  color="#2196F3"
+                  onPress={() => setSecure(!secure)}
+                />
+              )}
 
               <Paragraph
                 style={{
@@ -181,7 +207,9 @@ function Register() {
                   borderBottomWidth: 1,
                   borderBottomColor: '#2196F3',
                   marginBottom: 10,
+                  color: contentColor,
                 }}
+                secureTextEntry={secure2}
               />
 
               <View
@@ -204,6 +232,7 @@ function Register() {
                     borderBottomColor: '#2196F3',
                     marginBottom: 10,
                     fontWeight: '300',
+                    color: contentColor,
                   }}
                 />
               </View>

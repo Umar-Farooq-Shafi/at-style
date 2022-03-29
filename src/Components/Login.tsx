@@ -138,6 +138,7 @@ function Login() {
             <Text
               style={{
                 alignSelf: 'center',
+                color: contentColor,
               }}>
               OR
             </Text>
@@ -147,10 +148,11 @@ function Login() {
                 flexDirection: 'row',
                 marginVertical: normalize(8),
                 justifyContent: 'space-between',
+                start: normalize(-15),
               }}>
               <Button
                 labelStyle={{
-                  fontSize: normalize(8),
+                  fontSize: normalize(9),
                   fontWeight: 'bold',
                 }}
                 mode="text"
@@ -159,7 +161,7 @@ function Login() {
               </Button>
               <Button
                 labelStyle={{
-                  fontSize: normalize(8),
+                  fontSize: normalize(9),
                   fontWeight: 'bold',
                 }}
                 mode="text"
