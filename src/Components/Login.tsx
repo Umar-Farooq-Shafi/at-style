@@ -15,11 +15,15 @@ import {
   Button,
   Checkbox,
 } from 'react-native-paper';
+
+import { Formik } from 'formik';
+import * as yup from 'yup';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import normalize from './Normalize';
 
 function Login() {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
   const [isSelected, setSelection] = React.useState(false);
 
   const theme = useTheme();
@@ -63,77 +67,144 @@ function Login() {
         }}>
         <Card>
           <Card.Content>
-            <Paragraph
-              style={{
-                color: contentColor,
-              }}>
-              Email/Phone
-            </Paragraph>
-            <TextInput
-              value={email}
-              onChangeText={e => setEmail(e)}
-              placeholder="Enter Phone or Email..."
-              placeholderTextColor={contentColor}
-              style={{
-                borderBottomWidth: 1,
-                borderBottomColor: '#2196F3',
-                marginBottom: 10,
+            <Formik
+              initialValues={{
+                username: '',
+                password: '',
               }}
-            />
+              onSubmit={async (values, action) => {
+                try {
+                  const fetchCall = await fetch(
+                    'http://192.168.10.9:3000/login',
+                    {
+                      method: 'POST',
+                      headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify(values),
+                    },
+                  );
+                  const res = await fetchCall.json();
 
-            <Paragraph
-              style={{
-                color: contentColor,
-              }}>
-              Password
-            </Paragraph>
-            <TextInput
-              value={password}
-              onChangeText={p => setPassword(p)}
-              placeholder="Enter Password..."
-              placeholderTextColor={contentColor}
-              style={{
-                borderBottomWidth: 1,
-                borderBottomColor: '#2196F3',
-                marginBottom: 10,
+                  if (res.statusCode === 401) {
+                    console.log(res.message);
+                    action.setStatus('Username or password is incorrect');
+                  } else {
+                    console.log('Success');
+                    await AsyncStorage.setItem('@token', res.access_token);
+                    action.resetForm();
+                  }
+                  action.setSubmitting(false);
+                } catch (error: any) {
+                  console.error(error);
+                  action.setStatus('Internal server error. Try again later');
+                }
               }}
-            />
+              validationSchema={yup.object().shape({
+                username: yup.string().required('Username is required'),
+                password: yup
+                  .string()
+                  .min(3, 'Password can not be less than 3 characters.')
+                  .max(15, 'Password can not be more than 15 characters.')
+                  .required('Password is required'),
+              })}>
+              {({
+                handleChange,
+                errors,
+                handleSubmit,
+                touched,
+                status,
+                values,
+                isValid,
+              }) => (
+                <>
+                  <Paragraph
+                    style={{
+                      color: contentColor,
+                    }}>
+                    Username*
+                  </Paragraph>
+                  <TextInput
+                    value={values.username}
+                    onChangeText={handleChange('username')}
+                    placeholder="Enter Username..."
+                    placeholderTextColor={contentColor}
+                    style={{
+                      borderBottomWidth: 1,
+                      borderBottomColor: '#2196F3',
+                      marginBottom: 10,
+                      color: contentColor,
+                    }}
+                  />
+                  {errors.username && touched.username && (
+                    <Text style={{ color: 'red' }}>{errors.username}</Text>
+                  )}
 
-            <View
-              style={{
-                flexDirection: 'row',
-              }}>
-              <Checkbox
-                status={isSelected ? 'checked' : 'unchecked'}
-                onPress={() => setSelection(!isSelected)}
-                color="#2196F3"
-              />
-              <Paragraph
-                style={{
-                  color: contentColor,
-                  marginTop: 7,
-                }}>
-                Remember me
-              </Paragraph>
-            </View>
-            <View
-              style={{
-                alignSelf: 'center',
-                marginVertical: 10,
-              }}>
-              <Button
-                labelStyle={{
-                  fontSize: 12,
-                }}
-                style={{
-                  backgroundColor: '#2196F3',
-                  width: 90,
-                }}
-                mode="contained"
-                color={contentColor}>
-                Log IN
-              </Button>
-            </View>
+                  <Paragraph
+                    style={{
+                      color: contentColor,
+                    }}>
+                    Password
+                  </Paragraph>
+                  <TextInput
+                    value={values.password}
+                    onChangeText={handleChange('password')}
+                    placeholder="Enter Password..."
+                    placeholderTextColor={contentColor}
+                    style={{
+                      borderBottomWidth: 1,
+                      borderBottomColor: '#2196F3',
+                      marginBottom: 10,
+                      color: contentColor,
+                    }}
+                  />
+                  {errors.password && touched.password && (
+                    <Text style={{ color: 'red' }}>{errors.password}</Text>
+                  )}
+
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                    }}>
+                    <Checkbox
+                      status={isSelected ? 'checked' : 'unchecked'}
+                      onPress={() => setSelection(!isSelected)}
+                      color="#2196F3"
+                    />
+                    <Paragraph
+                      style={{
+                        color: contentColor,
+                        marginTop: 7,
+                      }}>
+                      Remember me
+                    </Paragraph>
+                  </View>
+
+                  {!!status && <Text style={{ color: 'red' }}>{status}</Text>}
+                  <View
+                    style={{
+                      alignSelf: 'center',
+                      marginVertical: 10,
+                    }}>
+                    <Button
+                      labelStyle={{
+                        fontSize: 12,
+                      }}
+                      style={{
+                        backgroundColor: '#2196F3',
+                        width: 90,
+                      }}
+                      onPress={handleSubmit}
+                      disabled={!isValid}
+                      mode="contained"
+                      color={contentColor}>
+                      Log IN
+                    </Button>
+                  </View>
+                </>
+              )}
+            </Formik>
 
             <Text
               style={{
