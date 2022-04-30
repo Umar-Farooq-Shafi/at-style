@@ -6,7 +6,7 @@
 'use strict';
 import Color from 'color';
 import React from 'react';
-import { View, Text, SafeAreaView, ScrollView, Alert } from 'react-native';
+import { View, Text, SafeAreaView, ScrollView } from 'react-native';
 import {
   Card,
   useTheme,
@@ -26,7 +26,7 @@ const data: Array<Object> = [
   { label: 'Female', value: 'female' },
 ];
 
-function Register() {
+function Register(props: any) {
   const [gender, setGender] = React.useState('');
 
   const [securePassword, setSecurePassword] = React.useState(true);
@@ -79,40 +79,46 @@ function Register() {
               <Formik
                 initialValues={{
                   name: '',
-                  phone: '',
                   email: '',
+                  phone: '',
                   password: '',
                   repeatPassword: '',
                   code: '',
-                  gender: '',
                 }}
                 onSubmit={async (values, action) => {
-                  console.log('first');
-                  values.gender = gender;
-                  Alert.alert(JSON.stringify(values));
+                  const formValues = {
+                    ...values,
+                    gender,
+                  };
+
                   try {
                     const fetchCall = await fetch(
-                      'http://192.168.10.9:3000/api/user',
+                      'http://192.168.10.10:3000/api/user',
                       {
                         method: 'POST',
                         headers: {
                           Accept: 'application/json',
                           'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify(values),
+                        body: JSON.stringify(formValues),
                       },
                     );
 
                     const res = await fetchCall.json();
 
-                    console.log(res);
+                    if (res === 409) {
+                      action.setStatus('Username already exists');
+                    } else if (res === 201) {
+                      console.log('Success');
+                      action.setStatus('');
+                      action.resetForm();
+                    }
                     action.setSubmitting(false);
                   } catch (error: any) {
                     console.log(error);
                     action.setStatus('Internal Server Error. Try again later');
                   }
                 }}
-                validate={() => ({})}
                 validationSchema={yup.object().shape({
                   name: yup.string().required('Name is required'),
                   email: yup.string().email().required('Email is required'),
@@ -127,7 +133,7 @@ function Register() {
                     .min(3, 'Password can not be less than 3 characters.')
                     .max(15, 'Password can not be more than 15 characters.')
                     .required('Password is required'),
-                  confirmPassword: yup
+                  repeatPassword: yup
                     .string()
                     .oneOf([yup.ref('password'), null], 'Passwords must match')
                     .required('Confirm Password is required'),
@@ -140,6 +146,7 @@ function Register() {
                   touched,
                   values,
                   isValid,
+                  status,
                 }) => (
                   <>
                     {/* name input */}
@@ -360,6 +367,7 @@ function Register() {
                       />
                     </View>
 
+                    {!!status && <Text style={{ color: 'red' }}>{status}</Text>}
                     <View
                       style={{
                         alignSelf: 'center',
@@ -399,6 +407,9 @@ function Register() {
               <Button
                 labelStyle={{
                   fontSize: normalize(12),
+                }}
+                onPress={() => {
+                  props.navigation.navigate('Login');
                 }}
                 mode="text"
                 color="#2196F3">

@@ -23,8 +23,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import normalize from './Normalize';
 
-function Login() {
+function Login(props: any) {
   const [isSelected, setSelection] = React.useState(false);
+
+  console.log(props);
 
   const theme = useTheme();
 
@@ -258,6 +260,9 @@ function Login() {
                 fontSize: normalize(12),
               }}
               mode="text"
+              onPress={() => {
+                props.navigation.navigate('Register');
+              }}
               color="#2196F3">
               Sign UP
             </Button>
